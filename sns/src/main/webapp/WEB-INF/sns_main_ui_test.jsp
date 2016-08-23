@@ -19,11 +19,7 @@
 	});
 
 	function newuser() {
-		window
-				.open(
-						"new_user.jsp",
-						"newuser",
-						"titlebar=no,location=no,scrollbars=no,resizeable=no,menubar=no,toolbar=no,width=300,height=240");
+		window.open("new_user.jsp", "newuser", "titlebar=no,location=no,scrollbars=no,resizeable=no,menubar=no,toolbar=no,width=300,height=240");
 	}
 </script>
 
