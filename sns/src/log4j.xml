@@ -4,19 +4,19 @@
 
 	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPatter" value="[%d{HH:mm:ss}] [%c{1}] [%p] %m %n"/>
+			<param name="ConversionPattern" value="[%d{HH:mm:ss}] [%c{1}] [%p] %m %n"/>
 		</layout>
 	</appender>
-	
+
 	<appender name="rolling" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="/Users/yichangsin/Documents/git/hanbit2/logs/rolling.log.html";
-		<param name="Append" value="true"/>
-		<param name="MaxFileSize" value="1024kb"/>
-		<param name="MaxBackupIndex" value="1"/>
-		<layout class="org.apache.log4j.HTMLLayout"/>
+		<param name="file" value="/Users/yichangsin/Documents/git/hanbit2/logs/rolling.log.html" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="1024kb" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.HTMLLayout" />
 	</appender>
 	
-	<logger name="org.apache.jsp.mysns">
+	<logger name="org.apache.jsp.sns">
 		<level value="WARN"/>
 		<appender-ref ref="stdout"/>
 		<appender-ref ref="rolling"/>
