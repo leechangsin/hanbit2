@@ -1,7 +1,6 @@
 package sns.member;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,8 +9,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import text.DBManager;
-
+import sns.util.DBManager;
 public class MemberDao {
 	Connection conn;
 	PreparedStatement pstmt;
@@ -76,7 +74,6 @@ public class MemberDao {
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
 		} // end try
-
 		return nmembers;
 	}// end getNewMembers()
 }

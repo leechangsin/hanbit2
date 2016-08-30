@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<jsp:useBean id="member" class="sns.member.Member"/>
+	<jsp:setProperty name="member" property="*"/>
+<jsp:useBean id="memberDao" class="sns.member.MemberDao"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%
+	String action = request.getParameter("action");
+	if(action.equals("new")){
+		if(memberDao.addMember(member))
+			out.println("<script>alert('정상적으로 등록 되었습니다. 로그인 하세요!!'); window.close();</script>");
+		else
+			out.println("<script>alert('같은 아이디가 존재합니다!!'); history.go(-1);</script>");
+}
+%>
+
+</body>
+</html>
