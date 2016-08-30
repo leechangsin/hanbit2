@@ -17,7 +17,20 @@
 			out.println("<script>alert('정상적으로 등록 되었습니다. 로그인 하세요!!'); window.close();</script>");
 		else
 			out.println("<script>alert('같은 아이디가 존재합니다!!'); history.go(-1);</script>");
-}
+	}
+	if(action.equals("login")){
+		if(memberDao.login(member.getUid(), member.getPasswd())){
+			session.setAttribute("uid", member.getUid());
+			response.sendRedirect("sns_control.jsp?action=getall");
+		}
+		else{
+			out.println("<script>alert('아이디나 비밀번호가 틀렸습니다!!'); history.go(-1);</script>");
+		}
+	}
+	if(action.equals("logout")){
+		session.removeAttribute("uid");
+		response.sendRedirect("sns_control.jsp?action=getall");
+	}
 %>
 
 </body>
