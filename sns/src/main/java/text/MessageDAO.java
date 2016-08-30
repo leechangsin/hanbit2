@@ -1,7 +1,6 @@
 package text;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +9,12 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sns.member.MemberDao;
+
 public class MessageDAO {
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs;
-	
-	Logger logger = LoggerFactory.getLogger(MemberDAO.class);
+	PreparedStatement pstmt;
+	Connection conn;
+	Logger logger = LoggerFactory.getLogger(MemberDao.class);
 
 	public boolean newMsg(Message msg){
 		conn = DBManager.getConnection();
@@ -102,20 +101,19 @@ public class MessageDAO {
 		ArrayList<MessageSet> datas = new ArrayList<MessageSet>();
 		String sql;
 
-		// 전체 게시물인경우
-		if (suid == null || suid.equals("")) {
-			sql = "select * from message order by date desc limit 0,?";
-			pstmt.setInt(1, cnt);
-		}
-		// 특정회원 게시물인 경우
-		else {
-			sql = "select * from message where uid=? order by date desc limit 0,?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, suid);
-			pstmt.setInt(2, cnt);
-		}
-
 		try {
+			// 전체 게시물인경우
+			if (suid == null || suid.equals("")) {
+				sql = "select * from message order by date desc limit 0,?";
+				pstmt.setInt(1, cnt);
+			}
+			// 특정회원 게시물인 경우
+			else {
+				sql = "select * from message where uid=? order by date desc limit 0,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, suid);
+				pstmt.setInt(2, cnt);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				MessageSet ms = new MessageSet();
