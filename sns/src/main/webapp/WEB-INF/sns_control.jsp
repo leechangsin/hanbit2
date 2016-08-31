@@ -10,6 +10,7 @@
 	<jsp:setProperty name="reply" property="*"/>
 
 <%
+	out.println("2");
 	String action = request.getParameter("action");
 	String cnt = request.getParameter("cnt");
 	String suid = request.getParameter("suid");
@@ -20,11 +21,11 @@
 	int mcnt;
 	
 	if((cnt != null) && (suid != null)){
-		home="sns_control.jsp?action=getall&cnt="+cnt+"&suid="+suid;
+		home="sns_control.jsp?action=getAll&cnt="+cnt+"&suid="+suid;
 		mcnt = Integer.parseInt(request.getParameter("cnt"));
 	}
 	else {
-		home = "sns_control.jsp?action=getall";
+		home = "sns_control.jsp?action=getAll";
 		mcnt = 5;
 	}
 	
@@ -43,9 +44,8 @@
 	else if(action.equals("newReply")){
 		if(msgDao.newReply(reply))
 			pageContext.forward(home);
-		else{
+		else
 			throw new Exception("덧글 등록 오류!!");
-		}
 	}
 	else if(action.equals("delReply")){
 		if(msgDao.delReply(reply.getRid()))
@@ -66,6 +66,6 @@
 		
 		request.setAttribute("suid", suid);
 		request.setAttribute("cnt", cnt);
-		pageContext.forward("sns_main.jsp");
+		pageContext.forward("sns_main_ui.jsp");
 	}
 %>

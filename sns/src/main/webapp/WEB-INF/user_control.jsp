@@ -12,6 +12,7 @@
 <body>
 <%
 	String action = request.getParameter("action");
+
 	if(action.equals("new")){
 		if(memberDao.addMember(member))
 			out.println("<script>alert('정상적으로 등록 되었습니다. 로그인 하세요!!'); window.close();</script>");
@@ -21,7 +22,7 @@
 	if(action.equals("login")){
 		if(memberDao.login(member.getUid(), member.getPasswd())){
 			session.setAttribute("uid", member.getUid());
-			response.sendRedirect("sns_control.jsp?action=getall");
+			response.sendRedirect("sns_control.jsp?action=getAll");
 		}
 		else{
 			out.println("<script>alert('아이디나 비밀번호가 틀렸습니다!!'); history.go(-1);</script>");
@@ -29,7 +30,7 @@
 	}
 	if(action.equals("logout")){
 		session.removeAttribute("uid");
-		response.sendRedirect("sns_control.jsp?action=getall");
+		response.sendRedirect("sns_control.jsp?action=getAll");
 	}
 %>
 

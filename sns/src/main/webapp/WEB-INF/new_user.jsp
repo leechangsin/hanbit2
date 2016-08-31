@@ -20,8 +20,8 @@
 				<td><input type="text" name="id" size="10" required></td>
 			</tr>
 			<tr>
-			<td>이메일</td>
-			<td><input type="email" name="email" size="10" required></td>
+				<td>이메일</td>
+				<td><input type="email" name="email" size="10" required></td>
 			</tr>
 			<tr>
 				<td>비밀번호</td>
