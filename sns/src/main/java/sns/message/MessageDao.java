@@ -1,4 +1,4 @@
-package text;
+package sns.message;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sns.member.MemberDao;
+import sns.util.DBManager;
 
-public class MessageDAO {
+public class MessageDao {
 	PreparedStatement pstmt;
 	Connection conn;
 	Logger logger = LoggerFactory.getLogger(MemberDao.class);
@@ -154,4 +155,20 @@ public class MessageDAO {
 		}
 		return datas;
 	}//end getAll(int cnt, String suid)
+	
+	public void favorite(int mid) {
+		conn = DBManager.getConnection();
+		String sql = "update s_message set favcount=favcount+1 where mid=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getErrorCode());
+		}
+		finally {
+			DBManager.closeConnection(pstmt, conn);
+		}
+	}//end favorite(int mid)
 }
