@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8"
-	pageEncoding="UTF-8" import="java.util.*"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="sns"%>
 <!DOCTYPE html>
@@ -19,7 +18,7 @@
 	});
 
 	function newuser() {
-		window.open("new_user.jsp", "newuser","titlebar=no, location=no, scrollbars=no, resizeable=no, menubar=no, toolbar=no, width=300, height=240");
+		window.open("new_user.jsp", "newuser", "titlebar=no, location=no, scrollbars=no, resizeable=no, menubar=no, toolbar=no, width=300, height=240");
 	}
 </script>
 
@@ -28,14 +27,14 @@
 <body>
 	<header>
 		<div class="container1">
-			<h1 class="fontface" id="title">My Simple SNS</h1>
+			<h1 class="fontface" id="title">창신's SNS</h1>
 		</div>
 	</header>
 
 	<nav>
 		<div class="menu">
 			<ul>
-				<li><a href="#">Home</a></li>
+				<li><a href="/sns/">Home</a></li>
 				<li><a href="javascript:newuser()">New User</a></li>
 				<li><a href="sns_control.jsp?action=getAll">전체글보기</a>
 				<li><sns:login /></li>
@@ -47,32 +46,31 @@
 		<section id="main">
 			<section id="content">
 				<b>내소식 업데이트</b>
-				<form class="m_form" method="post"
-					action="sns_control.jsp?action=newMsg">
+				<form class="m_form" method="post" action="sns_control.jsp?action=newMsg">
 					<input type="hidden" name="uid" value="${uid}">
 					<sns:write type="msg" />
-					<button class="submit" type="submit">등록</button>
+					<!-- <button class="submit" type="submit">등록</button> -->
 				</form>
 				<br> <br>
 				<h3>친구들의 최신 소식</h3>
 				<div id="accordion">
-					<c:forEach varStatus="mcnt" var="msgs" items="${datas }">
-						<c:set var="m" value="${msgs.message }"/>
+					<c:forEach varStatus="mcnt" var="msgs" items="${datas}">
+						<c:set var="m" value="${msgs.message}"/>
 						<h3> [${m.uid}]${m.msg} :: [좋아요 ${m.favcount} | 댓글 ${m.replycount}] </h3>
 						<div>
 							<p></p>
-							<p><sns:smenu mid="${m.mid }" auid="${m.uid }" curmsg="${mcnt.index }"/>
-							${m.data }에 작성된 글입니다.></p>
+							<p><sns:smenu mid="${m.mid}" auid="${m.uid}" curmsg="${mcnt.index}"/>
+							/ ${m.date}에 작성된 글입니다.></p>
 							<ul class="reply">
-								<c:forEach var="r" items="${msgs.rlist }">
-									<li>${r.uid } :: ${r.rmsg } - ${r.date } <sns:rmenu curmsg="${mcnt.index }" rid="${r.rid }" ruid="${r.uid }"/></li>
+								<c:forEach var="r" items="${msgs.rlist}">
+									<li>${r.uid} :: ${r.rmsg} - ${r.date} <sns:rmenu curmsg="${mcnt.index}" rid="${r.rid}" ruid="${r.uid}"/></li>
 								</c:forEach>
 							</ul>
 							<form action="sns_control.jsp?action=newReply&cnt=${cnt}" method="post">
-								<input type="hidden" name="mid" value="${m.mid }">
-								<input type="hidden" name="uid" value="${uid }">
-								<input type="hidden" name="suid" value="${suid }">
-								<input type="hidden" name="curmsg" value="${mcnt.index }">
+								<input type="hidden" name="mid" value="${m.mid}">
+								<input type="hidden" name="uid" value="${uid}">
+								<input type="hidden" name="suid" value="${suid}">
+								<input type="hidden" name="curmsg" value="${mcnt.index}">
 								<sns:write type="rmsg"/>
 							</form>
 						</div>
@@ -85,23 +83,22 @@
 
 			<aside id="sidebar2">
 				<h2>새로운 친구들.!!</h2>
-				<c:forEach items="${nusers}" var="n">
-					<ul>
-						<li><a href="sns_control.jsp?action=getAll&suid=${n}"></a></li>
-					</ul>
-				</c:forEach>
-
+				<ul>
+					<c:forEach items="${newMembers}" var="members">
+						<li><a href = "sns_control.jsp?action=getAll&suid=${members}"> ${members} </a></li>
+					</c:forEach>
+				</ul>
 				<br> <br>
 				<h3>We're Social Too!!</h3>
-				<img src="img/facebook_32.png"> 
-				<img src="img/twitter_32.png">
-				<img src="img/youtube_32.png"> <br> <br> <br> <br>
+				<a href="www.facebook.com"><img src="img/facebook_32.png"></a>
+				<a href="www.twitter.com/"><img src="img/twitter_32.png"></a>
+				<a href="www.youtube.com"><img src="img/youtube_32.png"></a> <br> <br> <br> <br>
 
 				<h3>Links</h3>
 				<ul>
 					<li><a href="http://www.naver.com">네이버</a></li>
 					<li><a href="http://www.google.com">구글</a></li>
-					<li><a href="http://www.daum.com">다음</a></li>
+					<li><a href="http://www.daum.net">다음</a></li>
 				</ul>
 
 			</aside>
@@ -144,9 +141,9 @@
 					<!-- end of #third footer segment -->
 
 					<aside class="footer-segment">
-						<h4>Hee Joung Hwang</h4>
+						<h4>이창신</h4>
 						<p>
-							&copy; 2014 <a href="#">dinfree.com</a>
+							&copy; 2016 <a href="#">ycs318@naver.com</a>
 						</p>
 					</aside>
 					<!-- end of #fourth footer segment -->

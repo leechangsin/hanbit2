@@ -3,8 +3,8 @@ package sns.member;
 import java.sql.Date;
 
 public class Member {
+	private String uid;
 	private String name;
-	private String Uid;
 	private String passwd;
 	private String email;
 	private Date date;
@@ -18,11 +18,11 @@ public class Member {
 	}
 
 	public String getUid() {
-		return Uid;
+		return uid;
 	}
 
 	public void setUid(String id) {
-		this.Uid = id;
+		this.uid = id;
 	}
 
 	public String getPasswd() {

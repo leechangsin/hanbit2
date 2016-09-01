@@ -1,4 +1,4 @@
-package text;
+package sns.message;
 
 public class Reply {
 

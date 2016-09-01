@@ -9,19 +9,17 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sns.member.MemberDao;
 import sns.util.DBManager;
 
 public class MessageDao {
 	PreparedStatement pstmt;
 	Connection conn;
-	Logger logger = LoggerFactory.getLogger(MemberDao.class);
+	//Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public boolean newMsg(Message msg){
 		conn = DBManager.getConnection();
 		
-		String sql = "insert into message(uid, msg, date)" +
-				"values (?,?,now())";
+		String sql = "insert into message(uid, msg, date) values (?,?,now())";
 		
 		try{
 			pstmt = conn.prepareStatement(sql);
@@ -99,6 +97,8 @@ public class MessageDao {
 	}//end delReply(int rid)
 	
 	public ArrayList<MessageSet> getAll(int cnt, String suid) {
+		conn = DBManager.getConnection();
+		
 		ArrayList<MessageSet> datas = new ArrayList<MessageSet>();
 		String sql;
 
@@ -106,6 +106,7 @@ public class MessageDao {
 			// 전체 게시물인경우
 			if (suid == null || suid.equals("")) {
 				sql = "select * from message order by date desc limit 0,?";
+				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, cnt);
 			}
 			// 특정회원 게시물인 경우
@@ -115,6 +116,7 @@ public class MessageDao {
 				pstmt.setString(1, suid);
 				pstmt.setInt(2, cnt);
 			}
+			
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				MessageSet ms = new MessageSet();
@@ -123,7 +125,7 @@ public class MessageDao {
 
 				m.setMid(rs.getInt("mid"));
 				m.setMsg(rs.getString("msg"));
-				m.setDate(rs.getDate("date") + " / " + rs.getTime("date"));
+				m.setDate(rs.getDate("date") + "/" + rs.getTime("date"));
 				m.setFavcount(rs.getInt("favcount"));
 				m.setUid(rs.getString("uid"));
 
@@ -153,12 +155,14 @@ public class MessageDao {
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
 		}
+		
 		return datas;
 	}//end getAll(int cnt, String suid)
 	
 	public void favorite(int mid) {
 		conn = DBManager.getConnection();
-		String sql = "update s_message set favcount=favcount+1 where mid=?";
+		
+		String sql = "update message set favcount=favcount+1 where mid=?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, mid);

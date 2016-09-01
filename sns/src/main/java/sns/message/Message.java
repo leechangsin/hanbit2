@@ -1,4 +1,4 @@
-package text;
+package sns.message;
 
 public class Message {
 
@@ -53,8 +53,8 @@ public class Message {
 		return date;
 	}
 
-	public void setDate(String datetime) {
-		this.date = datetime;
+	public void setDate(String dateTime) {
+		this.date = dateTime;
 	}
 
 }

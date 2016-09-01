@@ -1,4 +1,4 @@
-package text;
+package sns.message;
 
 import java.util.ArrayList;
 

@@ -10,7 +10,6 @@
 	<jsp:setProperty name="reply" property="*"/>
 
 <%
-	out.println("2");
 	String action = request.getParameter("action");
 	String cnt = request.getParameter("cnt");
 	String suid = request.getParameter("suid");
@@ -23,49 +22,43 @@
 	if((cnt != null) && (suid != null)){
 		home="sns_control.jsp?action=getAll&cnt="+cnt+"&suid="+suid;
 		mcnt = Integer.parseInt(request.getParameter("cnt"));
-	}
-	else {
+	} else {
 		home = "sns_control.jsp?action=getAll";
 		mcnt = 5;
 	}
 	
-	if(action.equals("newMsg")){
-		if(msgDao.newMsg(msg))
+	if (action.equals("getAll")) {
+		ArrayList<MessageSet> datas = msgDao.getAll(mcnt, suid);
+		ArrayList<String> newMembers = new MemberDao().getNewMembers();
+
+		request.setAttribute("datas", datas);
+		request.setAttribute("newMembers", newMembers);
+
+		request.setAttribute("suid", suid);
+		request.setAttribute("cnt", mcnt);
+		pageContext.forward("sns_main_ui.jsp");
+	} else if (action.equals("newMsg")) {
+		if (msgDao.newMsg(msg))
 			response.sendRedirect(home);
 		else
 			throw new Exception("메세지 등록 오류!!");
-	}
-	else if(action.equals("delMsg")){
-		if(msgDao.delMsg(msg.getMid()))
+	} else if (action.equals("delMsg")) {
+		if (msgDao.delMsg(msg.getMid()))
 			response.sendRedirect(home);
 		else
 			throw new Exception("메세지 삭제 오류!!");
-	}
-	else if(action.equals("newReply")){
-		if(msgDao.newReply(reply))
+	} else if (action.equals("newReply")) {
+		if (msgDao.newReply(reply))
 			pageContext.forward(home);
 		else
 			throw new Exception("덧글 등록 오류!!");
-	}
-	else if(action.equals("delReply")){
-		if(msgDao.delReply(reply.getRid()))
+	} else if (action.equals("delReply")) {
+		if (msgDao.delReply(reply.getRid()))
 			pageContext.forward(home);
 		else
 			throw new Exception("덧글 삭제 오류!!");
-	}
-	else if(action.equals("favorite")){
+	} else if (action.equals("favorite")) {
 		msgDao.favorite(msg.getMid());
 		pageContext.forward(home);
-	}
-	else if(action.equals("getAll")){
-		ArrayList<MessageSet> datas = msgDao.getAll(mcnt, suid);
-		ArrayList<String> nusers = new MemberDao().getNewMembers();
-		
-		request.setAttribute("datas", datas);
-		request.setAttribute("nusers", nusers);
-		
-		request.setAttribute("suid", suid);
-		request.setAttribute("cnt", cnt);
-		pageContext.forward("sns_main_ui.jsp");
 	}
 %>

@@ -5,5 +5,5 @@
 <%@ attribute name="curmsg" %>
 
 <c:if test="${uid == ruid }">
-	[<a href="sns_control.jsp?action=delReply&rid=${rid}&curms=${curmsg}&cnt=${cnt}&suid=${suid}">삭제</a>
+	[<a href="sns_control.jsp?action=delReply&rid=${rid}&curms=${curmsg}&cnt=${cnt}&suid=${suid}">삭제</a>]
 </c:if>

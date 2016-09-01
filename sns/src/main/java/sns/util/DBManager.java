@@ -1,4 +1,4 @@
-package text;
+package sns.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +18,8 @@ public class DBManager {
 			DataSource ds = (DataSource) envContext.lookup("jdbc/mysql");
 			conn = ds.getConnection();
 		} catch(Exception e){
-			System.out.println(e);
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
 		}
 		return conn;
@@ -27,11 +27,13 @@ public class DBManager {
 	
 	public static void closeConnection(PreparedStatement pstmt, Connection conn ){
 		try{
-			pstmt.close();
-			conn.close();
+			if(pstmt != null)
+				pstmt.close();
+			if(conn != null)
+				conn.close();
 		} catch(SQLException e){
-			System.out.println(e);
 			e.printStackTrace();
+			System.out.println(e.getErrorCode());
 		}
 	}//end closeConnection(PreparedStatement pstmt, Connection conn )
 

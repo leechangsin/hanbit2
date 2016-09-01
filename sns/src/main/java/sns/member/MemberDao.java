@@ -13,21 +13,23 @@ import sns.util.DBManager;
 public class MemberDao {
 	Connection conn;
 	PreparedStatement pstmt;
-	Logger logger = LoggerFactory.getLogger(MemberDao.class);
+	//Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public boolean addMember(Member member) {
 		conn = DBManager.getConnection();
-		String sql = "insert into member(name, uid, passwd, email, date) values(?,?,?,?,now())";
+		String sql = "insert into member(uid, name, passwd, email, date) values(?,?,?,?,now())";
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, member.getName());
-			pstmt.setString(2, member.getUid());
+			pstmt.setString(1, member.getUid());
+			pstmt.setString(2, member.getName());
 			pstmt.setString(3, member.getPasswd());
 			pstmt.setString(4, member.getEmail());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.info("Error Code : {}", e.getErrorCode());
+			System.out.println(e.getErrorCode());
+			//logger.info("Error Code : {}", e.getErrorCode());
 			return false;
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
@@ -49,7 +51,8 @@ public class MemberDao {
 				return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.info("Error Code : {}", e.getErrorCode());
+			System.out.println(e.getErrorCode());
+			//logger.info("Error Code : {}", e.getErrorCode());
 			return false;
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
@@ -59,7 +62,8 @@ public class MemberDao {
 	
 	public ArrayList<String> getNewMembers() {
 		conn = DBManager.getConnection();
-		ArrayList<String> nmembers = new ArrayList<String>();
+		
+		ArrayList<String> newMembers = new ArrayList<String>();
 		// 회원목록은 7개 까지만 가져옴
 		String sql = "select * from member order by date desc limit 0,7";
 
@@ -67,14 +71,15 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
-				nmembers.add(rs.getString("id"));
+				newMembers.add(rs.getString("uid"));
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.info("Error Code : {}", e.getErrorCode());
+			System.out.println(e.getErrorCode());
+			//logger.info("Error Code : {}", e.getErrorCode());
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
 		} // end try
 
-		return nmembers;
+		return newMembers;
 	}// end getNewMembers()
 }

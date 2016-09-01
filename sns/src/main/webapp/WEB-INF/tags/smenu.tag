@@ -5,6 +5,6 @@
 <%@ attribute name="curmsg" %>
 
 <c:if test="${uid == auid }">
-	[<a href="sns_control.jsp?action=delMsg&mid=${mid }&curmsg=${curmsg }&cnt=${cnt }&suid=${suid }">삭제</a>]
+	[<a href="sns_control.jsp?action=delMsg&mid=${mid}&curmsg=${curmsg}&cnt=${cnt}&suid=${suid}">삭제</a>]
 </c:if>
-[<a href="sns_control.jsp?action=fav&mid=${mid }&curmsg=${curmsg }&cnt=${cnt }&suid=${suid }">좋아요</a>]
+[<a href="sns_control.jsp?action=favorite&mid=${mid}&curmsg=${curmsg}&cnt=${cnt}&suid=${suid}">좋아요</a>]

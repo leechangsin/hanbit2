@@ -17,7 +17,7 @@
 			</tr>
 			<tr>
 				<td>아이디</td>
-				<td><input type="text" name="id" size="10" required></td>
+				<td><input type="text" name="uid" size="10" required></td>
 			</tr>
 			<tr>
 				<td>이메일</td>
