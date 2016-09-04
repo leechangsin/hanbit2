@@ -20,6 +20,10 @@
 	function newuser() {
 		window.open("new_user.jsp", "newuser", "titlebar=no, location=no, scrollbars=no, resizeable=no, menubar=no, toolbar=no, width=300, height=240");
 	}
+	
+	function modify(){
+		alert("아직 구현되지 않은 기능입니다. 조금만 기다려주세요.");
+	}
 </script>
 
 </head>
@@ -35,7 +39,6 @@
 		<div class="menu">
 			<ul>
 				<li><a href="/sns/">Home</a></li>
-				<li><a href="javascript:newuser()">New User</a></li>
 				<li><a href="sns_control.jsp?action=getAll">전체글보기</a>
 				<li><sns:login /></li>
 			</ul>
@@ -49,7 +52,6 @@
 				<form class="m_form" method="post" action="sns_control.jsp?action=newMsg">
 					<input type="hidden" name="uid" value="${uid}">
 					<sns:write type="msg" />
-					<!-- <button class="submit" type="submit">등록</button> -->
 				</form>
 				<br> <br>
 				<h3>친구들의 최신 소식</h3>
@@ -62,8 +64,8 @@
 							<p><sns:smenu mid="${m.mid}" auid="${m.uid}" curmsg="${mcnt.index}"/>
 							/ ${m.date}에 작성된 글입니다.></p>
 							<ul class="reply">
-								<c:forEach var="r" items="${msgs.rlist}">
-									<li>${r.uid} :: ${r.rmsg} - ${r.date} <sns:rmenu curmsg="${mcnt.index}" rid="${r.rid}" ruid="${r.uid}"/></li>
+								<c:forEach var="reply" items="${msgs.rlist}">
+									<li>${reply.uid} :: ${reply.rmsg} - ${reply.date} <sns:rmenu curmsg="${mcnt.index}" rid="${reply.rid}" ruid="${reply.uid}"/></li>
 								</c:forEach>
 							</ul>
 							<form action="sns_control.jsp?action=newReply&cnt=${cnt}" method="post">

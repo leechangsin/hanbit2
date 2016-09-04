@@ -1,10 +1,10 @@
 <%@ tag language="java" pageEncoding="UTF-8" body-content="scriptless"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="type" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ attribute name="type"%>
 
 <c:if test="${uid != null}">
 	<c:choose>
-		<c:when  test="${type == 'msg' }">
+		<c:when test="${type == 'msg' }">
 			<input type="text" name="msg" maxlength="100" placeholder="내 소식을 알리세요!!">
 		</c:when>
 		<c:when test="${type == 'rmsg'}">

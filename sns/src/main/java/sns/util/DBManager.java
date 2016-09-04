@@ -2,6 +2,7 @@ package sns.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.naming.Context;
@@ -36,5 +37,18 @@ public class DBManager {
 			System.out.println(e.getErrorCode());
 		}
 	}//end closeConnection(PreparedStatement pstmt, Connection conn )
-
+	
+	public static void closeConnection(PreparedStatement pstmt, Connection conn, ResultSet... resultSet){
+		try{
+			if(pstmt != null)
+				pstmt.close();
+			if(conn != null)
+				conn.close();
+			for(int i = resultSet.length; i > 0; i--)
+				resultSet[i-1].close();
+		} catch(SQLException e){
+			e.printStackTrace();
+			System.out.println(e.getErrorCode());
+		}
+	}//end closeConnection(PreparedStatement pstmt, Connection conn, ResultSet resultSet)
 }

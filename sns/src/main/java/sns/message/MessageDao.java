@@ -32,7 +32,8 @@ public class MessageDao {
 			return false;
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
+		}//end try
+		
 		return true;
 	}//end newMsg(Message msg)
 	
@@ -51,7 +52,8 @@ public class MessageDao {
 			return false;
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
+		}//end try
+		
 		return true;	
 	}//end delMsg(int mid)
 	
@@ -66,40 +68,58 @@ public class MessageDao {
 			pstmt.setString(2, reply.getUid());
 			pstmt.setString(3, reply.getRmsg());
 			pstmt.executeUpdate();
+			
+			sql = "update message set replycount=replycount+1 where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, reply.getMid());
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getErrorCode());
 			return false;
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
+		}//end try
+		
 		return true;
 	}//end newReply(Reply reply)
 	
 	public boolean delReply(int rid){
 		conn = DBManager.getConnection();
 		
-		String sql = "delete from reply where rid = ?";
+		String sql = "select mid from reply where rid =?";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, rid);;
+			pstmt.setInt(1, rid);
+			ResultSet resultSet = pstmt.executeQuery();
+			
+			resultSet.next();
+			int mid = resultSet.getInt("mid");
+			sql = "update message set replycount=replycount-1 where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, mid);
+			pstmt.executeUpdate();
+			
+			sql = "delete from reply where rid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, rid);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getErrorCode());
 			return false;
-		}
-		finally {
+		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
+		}//end try
+		
 		return true;
 	}//end delReply(int rid)
 	
 	public ArrayList<MessageSet> getAll(int cnt, String suid) {
 		conn = DBManager.getConnection();
-		
-		ArrayList<MessageSet> datas = new ArrayList<MessageSet>();
+
+		ArrayList<MessageSet> datas = new ArrayList<>();
 		String sql;
 
 		try {
@@ -108,56 +128,53 @@ public class MessageDao {
 				sql = "select * from message order by date desc limit 0,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, cnt);
-			}
-			// 특정회원 게시물인 경우
+			} // 특정회원 게시물인 경우
 			else {
 				sql = "select * from message where uid=? order by date desc limit 0,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, suid);
 				pstmt.setInt(2, cnt);
 			}
-			
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				MessageSet ms = new MessageSet();
-				Message m = new Message();
-				ArrayList<Reply> rlist = new ArrayList<Reply>();
 
-				m.setMid(rs.getInt("mid"));
-				m.setMsg(rs.getString("msg"));
-				m.setDate(rs.getDate("date") + "/" + rs.getTime("date"));
-				m.setFavcount(rs.getInt("favcount"));
-				m.setUid(rs.getString("uid"));
+			ResultSet messageResultSet = pstmt.executeQuery();
+			while (messageResultSet.next()) {
+				MessageSet messageSet = new MessageSet();
+				Message message = new Message();
+				ArrayList<Reply> replys = new ArrayList<Reply>();
 
+				message.setMid(messageResultSet.getInt("mid"));
+				message.setUid(messageResultSet.getString("uid"));
+				message.setMsg(messageResultSet.getString("msg"));
+				message.setFavcount(messageResultSet.getInt("favcount"));
+				message.setReplycount(messageResultSet.getInt("replycount"));
+				message.setDate(messageResultSet.getDate("date") + "/" + messageResultSet.getTime("date"));
+				
 				sql = "select *  from reply where mid=? order by date desc";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, rs.getInt("mid"));
-				ResultSet rrs = pstmt.executeQuery();
-				while (rrs.next()) {
-					Reply r = new Reply();
-					r.setRid(rrs.getInt("rid"));
-					r.setUid(rrs.getString("uid"));
-					r.setRmsg(rrs.getString("rmsg"));
-					r.setDate(rrs.getDate("date") + "/" + rrs.getTime("date"));
-					rlist.add(r);
-				}
-				rrs.last();
-				m.setReplycount(rrs.getRow());
+				pstmt.setInt(1, messageResultSet.getInt("mid"));
+				ResultSet replyResultSet = pstmt.executeQuery();
+				while (replyResultSet.next()) {
+					Reply reply = new Reply();
+					reply.setRid(replyResultSet.getInt("rid"));
+					reply.setUid(replyResultSet.getString("uid"));
+					reply.setRmsg(replyResultSet.getString("rmsg"));
+					reply.setDate(replyResultSet.getDate("date") + "/" + replyResultSet.getTime("date"));
+					replys.add(reply);
+				}//end while (replyResultSet.next())
 
-				ms.setMessage(m);
-				ms.setRlist(rlist);
-				datas.add(ms);
-				rrs.close();
-			}
+				messageSet.setMessage(message);
+				messageSet.setRlist(replys);
+				datas.add(messageSet);
+			}//end while (messageResultSet.next())
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getErrorCode());
 		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
-		
+		}//end try
+
 		return datas;
-	}//end getAll(int cnt, String suid)
+	}// end getAll(int cnt, String suid)
 	
 	public void favorite(int mid) {
 		conn = DBManager.getConnection();
@@ -170,9 +187,8 @@ public class MessageDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getErrorCode());
-		}
-		finally {
+		} finally {
 			DBManager.closeConnection(pstmt, conn);
-		}
+		}//end try
 	}//end favorite(int mid)
 }

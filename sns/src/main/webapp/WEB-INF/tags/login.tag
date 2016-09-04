@@ -3,15 +3,17 @@
 
 <form name="loginform" method="post" action="user_control.jsp">
 	<c:choose>
-		<c:when test="${uid != null }">
+		<c:when test="${uid != null}">
 			<li><a href="#"> :: </a></li>
-			<li><a href="sns_control.jsp?action=getAll&suid=${uid}">${uid }님 글 모아보기</a></li>
+			<li><a href="javascript:modify()">정보수정</a></li>
+			<li><a href="sns_control.jsp?action=getAll&suid=${uid}">${uid}  님 글 모아보기</a></li>
 			<input type="hidden" name="action" value="logout">
-			<input type="submit" value="로그아웃"> 
+			<input type="submit" value="로그아웃">
 		</c:when>
 		<c:otherwise>
 			<li><a href="#"> :: </a></li>
-			<li><a href="#">Login</a></li>
+			<li><a href="javascript:newuser()">회원가입</a></li>
+			<li><a href="#">Login  </a></li>
 			<input type="hidden" name="action" value="login">
 			<input type="text" name="uid" size="10">
 			<input type="password" name="passwd" size="10">
