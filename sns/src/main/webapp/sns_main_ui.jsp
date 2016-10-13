@@ -120,7 +120,6 @@
 							<li><a href="#">Author</a></li>
 						</ul>
 					</aside>
-					<!-- end of #first footer segment -->
 
 					<aside class="footer-segment">
 						<h4>Java Web Programming</h4>
@@ -130,7 +129,6 @@
 							<li><a href="#">Book History</a></li>
 						</ul>
 					</aside>
-					<!-- end of #second footer segment -->
 
 					<aside class="footer-segment">
 						<h4>Contact Us</h4>
@@ -140,7 +138,6 @@
 							<li><a href="#">Investor Relations</a></li>
 						</ul>
 					</aside>
-					<!-- end of #third footer segment -->
 
 					<aside class="footer-segment">
 						<h4>이창신</h4>
@@ -148,13 +145,10 @@
 							&copy; 2016 <a href="#">ycs318@naver.com</a>
 						</p>
 					</aside>
-					<!-- end of #fourth footer segment -->
 
 				</section>
-				<!-- end of footer-outer-block -->
 
 			</section>
-			<!-- end of footer-area -->
 		</div>
 	</footer>
 </body>
